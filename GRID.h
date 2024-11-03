@@ -29,13 +29,15 @@ private:
 public:
     Grid(int cellsize) : cellsize(cellsize) {}
 
-    void Draw(int offsetX, int offsetY) { 
+    void Draw(int offsetX, int offsetY) { // with round corners
         for (const auto& cell : aliveCells) {
             int x = (cell.column - offsetX) * cellsize;
             int y = (cell.row - offsetY) * cellsize;
-            DrawRectangle(x, y, cellsize - 1, cellsize - 1, Color{ 255, 255, 255, 255 }); // blue Color{ 50, 65, 255, 255 })
+            Rectangle rec = { static_cast<float>(x), static_cast<float>(y), static_cast<float>(cellsize - 1), static_cast<float>(cellsize - 1) };
+            DrawRectangleRounded(rec, 0.2f, 4, Color{ 55, 95, 255, 255 });// blue Color{ 50, 65, 255, 255 })
         }
     }
+
 
     void SetCell(int row, int column, bool alive) {
         CellCoord coord = { row, column };
