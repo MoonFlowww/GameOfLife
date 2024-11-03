@@ -90,7 +90,7 @@ public:
     void GridDraw() { grid.Draw(offsetX, offsetY); }
     void GridSetCell(const int& row, const int& column, bool alive) { grid.SetCell(row, column, alive); }
 
-    void Update() {
+    void Update(bool charts = false) {
         static CellChangeTracker tracker;
         static int stepCounter = 0;
         static bool isSimulating = false;
@@ -126,11 +126,15 @@ public:
             }
         }
 
-        tracker.TrackChanges(grid, tmp_grid);
+        
         grid = tmp_grid;
+        if (charts) {
 
-        if (++stepCounter % 10 == 0) {
-            tracker.plot();
+        
+            tracker.TrackChanges(grid, tmp_grid);
+            if (++stepCounter % 10 == 0) {
+                tracker.plot();
+            }
         }
     }
 
@@ -171,19 +175,25 @@ public:
             Vector2 delta = { currentMousePosition.x - lastMousePosition.x, currentMousePosition.y - lastMousePosition.y };
             lastMousePosition = currentMousePosition;
 
-            // Update offset based on drag distance
             offsetX -= static_cast<int>(delta.x / grid.GetCellSize());
             offsetY -= static_cast<int>(delta.y / grid.GetCellSize());
         }
 
-        float wheelMove = GetMouseWheelMove();
-        if (wheelMove != 0) {
-            int newCellSize = grid.GetCellSize() + static_cast<int>(wheelMove);
-            if (newCellSize > 2) { 
-                offsetX = offsetX * grid.GetCellSize() / newCellSize;
-                offsetY = offsetY * grid.GetCellSize() / newCellSize;
+        double wheelMove = GetMouseWheelMove();
+        if (wheelMove != 0) { // zoom where the mouse is 
+            int oldCellSize = grid.GetCellSize();
+            int newCellSize = oldCellSize + static_cast<int>(wheelMove);
+            if (newCellSize > 2) {
+                Vector2 mousePos = GetMousePosition();
+
+                double worldX = offsetX + mousePos.x / oldCellSize;
+                double worldY = offsetY + mousePos.y / oldCellSize;
+
                 grid.SetCellSize(newCellSize);
-                tmp_grid = grid; 
+                tmp_grid.SetCellSize(newCellSize);
+
+                offsetX = worldX - mousePos.x / newCellSize;
+                offsetY = worldY - mousePos.y / newCellSize;
             }
         }
     }
