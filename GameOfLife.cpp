@@ -24,7 +24,7 @@ int main()
 
     while (!WindowShouldClose()) {
         logic.HandleMouseInput();
-        logic.Update(); // add true for charts
+        logic.Update(); // add true for chart
 
         BeginDrawing();
         ClearBackground(GREY);
