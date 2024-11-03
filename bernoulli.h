@@ -56,17 +56,4 @@ public:
         fig->current_axes()->x_axis().ticklabels({ "Total Births", "Total Deaths" });
         fig->draw();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 };
