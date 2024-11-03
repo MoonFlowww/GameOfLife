@@ -1,7 +1,8 @@
 
-#define WIN32_LEAN_AND_MEAN  // Exclure les APIs non nécessaires
+// errors between Matplot++ and Raylib
+#define WIN32_LEAN_AND_MEAN  // Exclure les APIs non nÃ©cessaires
 #define NOGDI                // Exclure Graphics Device Interface
-#define NOMINMAX             // Désactive min et max de Windows
+#define NOMINMAX             // DÃ©sactive min et max de Windows
 #define NOUSER               // Exclure USER APIs (ShowCursor, etc.)
 #define NOSOUND              // Exclure APIs pour le son
 
@@ -21,24 +22,9 @@ int main()
     SetTargetFPS(FPS);
     LOGIC logic(Window_Width, Window_Height, Cell_Size);
 
-    /* Sparcler
-    logic.GridSetCell(5, 6, 1);
-    logic.GridSetCell(6, 6, 1);
-    logic.GridSetCell(7, 6, 1);
-    */
-    
-
-    
-    /*
-    
-    */
-        
-    
-
-
     while (!WindowShouldClose()) {
         logic.HandleMouseInput();
-        logic.Update();
+        logic.Update(); // add true for charts
 
         BeginDrawing();
         ClearBackground(GREY);
